@@ -1,4 +1,4 @@
-/* @pjs preload="bikini_bottom.jpg,spongebob.png,patrick.png"; */
+/* @pjs preload="bikini_bottom.jpg, spongebob.png, patrick.png"; */
 
 // Java imports
 import java.text.DecimalFormat;
