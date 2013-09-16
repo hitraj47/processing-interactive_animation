@@ -1,7 +1,9 @@
-/* @pjs preload="bikini_bottom.jpg, spongebob.png, patrick.png"; */
+/* @pjs preload="bikini_bottom.jpg"; /*
+/* @pjs preload="spongebob.png"; */
+/* @pjs preload="patrick.png"; */
 
 // Java imports
-import java.text.DecimalFormat;
+//import java.text.DecimalFormat;
 
 // Graphics
 PImage backgroundImage;
@@ -130,12 +132,10 @@ float calculateSpeed(float _currentSpeed, float _sliderValue) {
 }
 
 void updateStatusBar() {
-  DecimalFormat df = new DecimalFormat("0.0");
-  String fps = df.format(frameRate);
-  String text = "FPS: " + fps + " | ";
+  String text = "FPS: " + nf(frameRate,0,1) + " | ";
   text += "Elapsed time: " + time/1000 + " seconds | ";
-  text += "Spongebob Position: (" + df.format(spongebob.getXPosition()) + "," + df.format(spongebob.getYPosition()) + ") | ";
-  text += "Patrick Position: (" + df.format(patrick.getXPosition()) + ", " + df.format(patrick.getYPosition()) + ")";
+  text += "Spongebob Position: (" + nf(spongebob.getXPosition(),0,1) + "," + nf(spongebob.getYPosition(),0,1) + ") | ";
+  text += "Patrick Position: (" + nf(patrick.getXPosition(),0,1) + ", " + nf(patrick.getYPosition(),0,1) + ")";
   statusbar.setText(text);
 }
 
