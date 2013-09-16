@@ -18,7 +18,7 @@ Sprite spongebob;
 Sprite patrick;
 
 // GUI elements
-StatusBar statusbar;
+MyStatusBar myMyStatusBar;
 Checkbox chkSpongebob;
 Checkbox chkPatrick;
 Slider sliderSpongebobSpeed;
@@ -49,7 +49,7 @@ void setup() {
   backgroundImage = loadImage(BACKGROUND_IMAGE);
   
   // GUI
-  statusbar = new StatusBar(StatusBar.POSITION_BOTTOM);  
+  myMyStatusBar = new MyStatusBar(MyStatusBar.POSITION_BOTTOM);  
   
   chkSpongebob = new Checkbox(5, 500, 25, "Show Spongebob");
   chkSpongebob.setChecked(true);
@@ -66,7 +66,7 @@ void setup() {
   btnStartStop = new Button(LABEL_START, 700, 530, 100, 30);
   
   // Movement box max height
-  movementBoxHeight = height-statusbar.getStatusBarHeight()-UIAreaHeight;
+  movementBoxHeight = height-myMyStatusBar.getMyStatusBarHeight()-UIAreaHeight;
   
   // images
   spongebobImage = loadImage(SPONGEBOB_IMAGE);
@@ -83,11 +83,11 @@ void draw() {
   image(backgroundImage,0,0);
   
   // status bar
-  statusbar.display();
+  myMyStatusBar.display();
   
   // Update the status bar
   if (millis() - time > timeToWait) {
-    updateStatusBar();
+    updateMyStatusBar();
     time = millis();
   }
   
@@ -131,19 +131,19 @@ float calculateSpeed(float _currentSpeed, float _sliderValue) {
   }
 }
 
-void updateStatusBar() {
+void updateMyStatusBar() {
   String text = "FPS: " + nf(frameRate,0,1) + " | ";
   text += "Elapsed time: " + time/1000 + " seconds | ";
   text += "Spongebob Position: (" + nf(spongebob.getXPosition(),0,1) + "," + nf(spongebob.getYPosition(),0,1) + ") | ";
   text += "Patrick Position: (" + nf(patrick.getXPosition(),0,1) + ", " + nf(patrick.getYPosition(),0,1) + ")";
-  statusbar.setText(text);
+  myMyStatusBar.setStatusText(text);
 }
 
 void drawUIArea() {
   rectMode(CORNER);
   stroke(0,0,0);
   fill(128,128,128,128);
-  rect(-1,height-statusbar.getStatusBarHeight()-UIAreaHeight,width+1,UIAreaHeight);
+  rect(-1,height-myMyStatusBar.getMyStatusBarHeight()-UIAreaHeight,width+1,UIAreaHeight);
 }
 
 void moveSpongebob() {
@@ -422,6 +422,64 @@ class Checkbox {
     this.updating = _updating;
   }
 }
+class MyStatusBar {
+  
+  public static final String POSITION_TOP = "top";
+  public static final String POSITION_BOTTOM = "bottom";
+  
+  private String position;
+  private String statusText = "";
+  private float statusBarHeight = 30;
+  
+  MyStatusBar(String _position) {
+    this.position = _position;
+  }
+  
+  void setMyStatusBarHeight(float _statusBarHeight) {
+    this.statusBarHeight = _statusBarHeight;
+  }
+  
+  float getMyStatusBarHeight() {
+    return statusBarHeight;
+  }
+  
+  void setStatusText(String _text) {
+    this.statusText = _text;
+  }
+  
+  String getStatusText() {
+    return statusText;
+  }
+  
+  void setPosition(String _position) {
+    this.position = _position;
+  }
+
+  String getPosition() {
+    return position;
+  }  
+  
+  void display() {
+    float y = 0;
+    float x = 0;
+    
+    if (position.equals(POSITION_TOP)) {
+      y = 0;
+    } else if (position.equals(POSITION_BOTTOM)) {
+      y = height-statusBarHeight;
+    }
+    
+    rectMode(CORNER);
+    fill(0,0,0);
+    rect(x,y,width,statusBarHeight);
+    
+    fill(0,255,0);
+    textSize(statusBarHeight/2);
+    textAlign(LEFT, CENTER);
+    text(statusText,x+5,y+(statusBarHeight/2));
+  }
+  
+}
 class Slider {
   private int x,y;      //location
   private int w,h;      // size
@@ -493,29 +551,29 @@ class Slider {
 }
 class Sprite {
   
-  private PImage image;
+  private PImage spriteImage;
   private float x,y;
   private float xspeed = 0;
   private float yspeed = 0;
   
   Sprite(String imageLocation, float x, float y) {
-    this.image = loadImage(imageLocation);
+    this.spriteImage = loadImage(imageLocation);
     this.x = x;
     this.y = y;
   }
   
   Sprite(PImage _image, float _x, float _y) {
-    this.image = _image;
+    this.spriteImage = _image;
     this.x = _x;
     this.y = _y;
   }
   
-  void setImage(String imageLocation) {
-    this.image = loadImage(imageLocation);
+  void setSpriteImage(String imageLocation) {
+    this.spriteImage = loadImage(imageLocation);
   }
   
-  void setImage(PImage image) {
-    this.image = image;
+  void setSpriteImage(PImage image) {
+    this.spriteImage = image;
   }
   
   float getXPosition() {
@@ -547,11 +605,11 @@ class Sprite {
     y += yspeed;
     
     // Check horizontal edges
-    if (x > (width-image.width) || x < 0) {
+    if (x > (width-spriteImage.width) || x < 0) {
       xspeed *= - 1;
     }
     //Check vertical edges
-    if (y > height-image.height || y < 0) {
+    if (y > height-spriteImage.height || y < 0) {
       yspeed *= - 1;
     }
   }
@@ -562,12 +620,12 @@ class Sprite {
     y += yspeed;
     
     // check horizontal edge
-    if (x < _x || x > (_x + (_width-image.width))) {
+    if (x < _x || x > (_x + (_width-spriteImage.width))) {
       xspeed *= -1;
     }
     
     // check vertical edge
-    if (y < _y || y > (_y + (_height-image.height))) {
+    if (y < _y || y > (_y + (_height-spriteImage.height))) {
       yspeed *= -1;
     }
   }
@@ -578,73 +636,15 @@ class Sprite {
   }
   
   void display() {
-    image(image,x,y);
+    image(spriteImage,x,y);
   }
   
   float getHeight() {
-    return image.height;
+    return spriteImage.height;
   }
   
   float getWidth() {
-    return image.width;
-  }
-  
-}
-class StatusBar {
-  
-  public static final String POSITION_TOP = "top";
-  public static final String POSITION_BOTTOM = "bottom";
-  
-  private String position;
-  private String text = "";
-  private float statusBarHeight = 30;
-  
-  StatusBar(String _position) {
-    this.position = _position;
-  }
-  
-  void setStatusBarHeight(float _statusBarHeight) {
-    this.statusBarHeight = _statusBarHeight;
-  }
-  
-  float getStatusBarHeight() {
-    return statusBarHeight;
-  }
-  
-  void setText(String _text) {
-    this.text = _text;
-  }
-  
-  String getText() {
-    return text;
-  }
-  
-  void setPosition(String _position) {
-    this.position = _position;
-  }
-
-  String getPosition() {
-    return position;
-  }  
-  
-  void display() {
-    float y = 0;
-    float x = 0;
-    
-    if (position.equals(POSITION_TOP)) {
-      y = 0;
-    } else if (position.equals(POSITION_BOTTOM)) {
-      y = height-statusBarHeight;
-    }
-    
-    rectMode(CORNER);
-    fill(0,0,0);
-    rect(x,y,width,statusBarHeight);
-    
-    fill(0,255,0);
-    textSize(statusBarHeight/2);
-    textAlign(LEFT, CENTER);
-    text(text,x+5,y+(statusBarHeight/2));
+    return spriteImage.width;
   }
   
 }

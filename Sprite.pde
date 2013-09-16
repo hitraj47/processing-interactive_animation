@@ -1,28 +1,28 @@
 class Sprite {
   
-  private PImage image;
+  private PImage spriteImage;
   private float x,y;
   private float xspeed = 0;
   private float yspeed = 0;
   
   Sprite(String imageLocation, float x, float y) {
-    this.image = loadImage(imageLocation);
+    this.spriteImage = loadImage(imageLocation);
     this.x = x;
     this.y = y;
   }
   
   Sprite(PImage _image, float _x, float _y) {
-    this.image = _image;
+    this.spriteImage = _image;
     this.x = _x;
     this.y = _y;
   }
   
-  void setImage(String imageLocation) {
-    this.image = loadImage(imageLocation);
+  void setSpriteImage(String imageLocation) {
+    this.spriteImage = loadImage(imageLocation);
   }
   
-  void setImage(PImage image) {
-    this.image = image;
+  void setSpriteImage(PImage image) {
+    this.spriteImage = image;
   }
   
   float getXPosition() {
@@ -54,11 +54,11 @@ class Sprite {
     y += yspeed;
     
     // Check horizontal edges
-    if (x > (width-image.width) || x < 0) {
+    if (x > (width-spriteImage.width) || x < 0) {
       xspeed *= - 1;
     }
     //Check vertical edges
-    if (y > height-image.height || y < 0) {
+    if (y > height-spriteImage.height || y < 0) {
       yspeed *= - 1;
     }
   }
@@ -69,12 +69,12 @@ class Sprite {
     y += yspeed;
     
     // check horizontal edge
-    if (x < _x || x > (_x + (_width-image.width))) {
+    if (x < _x || x > (_x + (_width-spriteImage.width))) {
       xspeed *= -1;
     }
     
     // check vertical edge
-    if (y < _y || y > (_y + (_height-image.height))) {
+    if (y < _y || y > (_y + (_height-spriteImage.height))) {
       yspeed *= -1;
     }
   }
@@ -85,15 +85,15 @@ class Sprite {
   }
   
   void display() {
-    image(image,x,y);
+    image(spriteImage,x,y);
   }
   
   float getHeight() {
-    return image.height;
+    return spriteImage.height;
   }
   
   float getWidth() {
-    return image.width;
+    return spriteImage.width;
   }
   
 }

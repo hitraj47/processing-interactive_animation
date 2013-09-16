@@ -18,7 +18,7 @@ Sprite spongebob;
 Sprite patrick;
 
 // GUI elements
-StatusBar statusbar;
+MyStatusBar myMyStatusBar;
 Checkbox chkSpongebob;
 Checkbox chkPatrick;
 Slider sliderSpongebobSpeed;
@@ -49,7 +49,7 @@ void setup() {
   backgroundImage = loadImage(BACKGROUND_IMAGE);
   
   // GUI
-  statusbar = new StatusBar(StatusBar.POSITION_BOTTOM);  
+  myMyStatusBar = new MyStatusBar(MyStatusBar.POSITION_BOTTOM);  
   
   chkSpongebob = new Checkbox(5, 500, 25, "Show Spongebob");
   chkSpongebob.setChecked(true);
@@ -66,7 +66,7 @@ void setup() {
   btnStartStop = new Button(LABEL_START, 700, 530, 100, 30);
   
   // Movement box max height
-  movementBoxHeight = height-statusbar.getStatusBarHeight()-UIAreaHeight;
+  movementBoxHeight = height-myMyStatusBar.getMyStatusBarHeight()-UIAreaHeight;
   
   // images
   spongebobImage = loadImage(SPONGEBOB_IMAGE);
@@ -83,11 +83,11 @@ void draw() {
   image(backgroundImage,0,0);
   
   // status bar
-  statusbar.display();
+  myMyStatusBar.display();
   
   // Update the status bar
   if (millis() - time > timeToWait) {
-    updateStatusBar();
+    updateMyStatusBar();
     time = millis();
   }
   
@@ -131,19 +131,19 @@ float calculateSpeed(float _currentSpeed, float _sliderValue) {
   }
 }
 
-void updateStatusBar() {
+void updateMyStatusBar() {
   String text = "FPS: " + nf(frameRate,0,1) + " | ";
   text += "Elapsed time: " + time/1000 + " seconds | ";
   text += "Spongebob Position: (" + nf(spongebob.getXPosition(),0,1) + "," + nf(spongebob.getYPosition(),0,1) + ") | ";
   text += "Patrick Position: (" + nf(patrick.getXPosition(),0,1) + ", " + nf(patrick.getYPosition(),0,1) + ")";
-  statusbar.setText(text);
+  myMyStatusBar.setStatusText(text);
 }
 
 void drawUIArea() {
   rectMode(CORNER);
   stroke(0,0,0);
   fill(128,128,128,128);
-  rect(-1,height-statusbar.getStatusBarHeight()-UIAreaHeight,width+1,UIAreaHeight);
+  rect(-1,height-myMyStatusBar.getMyStatusBarHeight()-UIAreaHeight,width+1,UIAreaHeight);
 }
 
 void moveSpongebob() {
